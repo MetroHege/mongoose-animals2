@@ -8,7 +8,10 @@ const speciesSchema = new mongoose.Schema<Species>({
     unique: true,
     minlength: 2,
   },
-  image: string,
+  image: {
+    type: String,
+    required: true,
+  },
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',

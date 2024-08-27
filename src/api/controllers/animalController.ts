@@ -1,4 +1,4 @@
-import {Request, Response, NextFunction} from 'express'; // Import the correct types for Request, Response, and NextFunction
+import {Request, Response, NextFunction} from 'express';
 
 import CustomError from '../../classes/CustomError';
 import {Animal} from '../../types/Animal';
@@ -111,4 +111,41 @@ const deleteAnimal = async (
   }
 };
 
-export {postAnimal, getAnimals, getAnimalById, putAnimal, deleteAnimal};
+const getAnimalsInLocation = async (
+  req: Request,
+  res: Response<DBMessageResponse>,
+  next: NextFunction,
+) => {
+  try {
+    const {topRight, bottomLeft} = req.query;
+    const [topRightLat, topRightLon] = (topRight as string).split(',');
+    const [bottomLeftLat, bottomLeftLon] = (bottomLeft as string).split(',');
+
+    const animals = await animalModel.find({
+      location: {
+        $geoWithin: {
+          $box: [
+            [parseFloat(bottomLeftLon), parseFloat(bottomLeftLat)],
+            [parseFloat(topRightLon), parseFloat(topRightLat)],
+          ],
+        },
+      },
+    });
+
+    res.json({
+      message: 'Animals fetched successfully',
+      data: animals,
+    });
+  } catch (error) {
+    next(new CustomError((error as Error).message, 500));
+  }
+};
+
+export {
+  postAnimal,
+  getAnimals,
+  getAnimalById,
+  putAnimal,
+  deleteAnimal,
+  getAnimalsInLocation,
+};

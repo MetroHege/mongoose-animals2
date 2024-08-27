@@ -6,7 +6,7 @@ import {Species} from '../../types/Species';
 import speciesModel from '../models/speciesModel';
 
 type DBMessageResponse = MessageResponse & {
-  data: Species;
+  data: Species | Species[];
 };
 
 const postSpecies = async (
