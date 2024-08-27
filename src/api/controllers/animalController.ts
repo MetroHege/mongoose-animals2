@@ -1,114 +1,114 @@
 import {Request, Response, NextFunction} from 'express'; // Import the correct types for Request, Response, and NextFunction
 
 import CustomError from '../../classes/CustomError';
+import {Animal} from '../../types/Animal';
 import {MessageResponse} from '../../types/Messages';
-import {Species} from '../../types/Species';
-import speciesModel from '../models/speciesModel';
+import animalModel from '../models/animalModel';
 
 type DBMessageResponse = MessageResponse & {
-  data: Species;
+  data: Animal | Animal[];
 };
 
-const postSpecies = async (
-  req: Request<{}, {}, Species>,
+const postAnimal = async (
+  req: Request<{}, {}, Animal>,
   res: Response<DBMessageResponse>,
   next: NextFunction,
 ) => {
   try {
-    const newSpecies = new speciesModel(req.body);
-    const savedSpecies = await newSpecies.save();
+    const newAnimal = new animalModel(req.body);
+    const savedAnimal = await newAnimal.save();
 
     res.json({
-      message: 'Species saved successfully',
-      data: savedSpecies,
+      message: 'Animal saved successfully',
+      data: savedAnimal,
     });
   } catch (error) {
     next(new CustomError((error as Error).message, 500));
   }
 };
 
-const getSpecies = async (
+const getAnimals = async (
   req: Request,
   res: Response<DBMessageResponse>,
   next: NextFunction,
 ) => {
   try {
-    const species = await speciesModel.find();
+    const animals = await animalModel.find();
 
     res.json({
-      message: 'Species fetched successfully',
-      data: species,
+      message: 'Animals fetched successfully',
+      data: animals,
     });
   } catch (error) {
     next(new CustomError((error as Error).message, 500));
   }
 };
 
-const getSpeciesById = async (
+const getAnimalById = async (
   req: Request<{id: string}>,
   res: Response<DBMessageResponse>,
   next: NextFunction,
 ) => {
   try {
-    const species = await speciesModel.findById(req.params.id);
+    const animal = await animalModel.findById(req.params.id);
 
-    if (!species) {
-      return next(new CustomError('Species not found', 404));
+    if (!animal) {
+      return next(new CustomError('Animal not found', 404));
     }
 
     res.json({
-      message: 'Species fetched successfully',
-      data: species,
+      message: 'Animal fetched successfully',
+      data: animal,
     });
   } catch (error) {
     next(new CustomError((error as Error).message, 500));
   }
 };
 
-const putSpecies = async (
-  req: Request<{id: string}, {}, Species>,
+const putAnimal = async (
+  req: Request<{id: string}, {}, Animal>,
   res: Response<DBMessageResponse>,
   next: NextFunction,
 ) => {
   try {
-    const species = await speciesModel.findByIdAndUpdate(
+    const updatedAnimal = await animalModel.findByIdAndUpdate(
       req.params.id,
       req.body,
       {new: true},
     );
 
-    if (!species) {
-      return next(new CustomError('Species not found', 404));
+    if (!updatedAnimal) {
+      return next(new CustomError('Animal not found', 404));
     }
 
     res.json({
-      message: 'Species updated successfully',
-      data: species,
+      message: 'Animal updated successfully',
+      data: updatedAnimal,
     });
   } catch (error) {
     next(new CustomError((error as Error).message, 500));
   }
 };
 
-const deleteSpecies = async (
+const deleteAnimal = async (
   req: Request<{id: string}>,
   res: Response<DBMessageResponse>,
   next: NextFunction,
 ) => {
   try {
-    const species = await speciesModel.findByIdAndDelete(req.params.id);
+    const deletedAnimal = await animalModel.findByIdAndDelete(req.params.id);
 
-    if (!species) {
-      return next(new CustomError('Species not found', 404));
+    if (!deletedAnimal) {
+      return next(new CustomError('Animal not found', 404));
     }
 
     res.json({
-      message: 'Species deleted successfully',
-      data: species,
+      message: 'Animal deleted successfully',
+      data: deletedAnimal,
     });
   } catch (error) {
     next(new CustomError((error as Error).message, 500));
   }
 };
 
-export {postSpecies, getSpecies, getSpeciesById, putSpecies, deleteSpecies};
+export {postAnimal, getAnimals, getAnimalById, putAnimal, deleteAnimal};

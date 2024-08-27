@@ -19,3 +19,5 @@ const speciesSchema = new mongoose.Schema<Species>({
     required: true,
   },
 });
+
+export default mongoose.model<Species>('Species', speciesSchema);
