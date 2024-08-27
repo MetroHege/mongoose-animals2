@@ -1,4 +1,4 @@
-import {Request, Response, NextFunction} from 'express'; // Import the correct types for Request, Response, and NextFunction
+import {Request, Response, NextFunction} from 'express';
 
 import CustomError from '../../classes/CustomError';
 import {MessageResponse} from '../../types/Messages';
@@ -29,16 +29,13 @@ const postSpecies = async (
 
 const getSpecies = async (
   req: Request,
-  res: Response<DBMessageResponse>,
+  res: Response<Species[]>,
   next: NextFunction,
 ) => {
   try {
     const species = await speciesModel.find();
 
-    res.json({
-      message: 'Species fetched successfully',
-      data: species,
-    });
+    res.json(species);
   } catch (error) {
     next(new CustomError((error as Error).message, 500));
   }
@@ -46,7 +43,7 @@ const getSpecies = async (
 
 const getSpeciesById = async (
   req: Request<{id: string}>,
-  res: Response<DBMessageResponse>,
+  res: Response<Species>,
   next: NextFunction,
 ) => {
   try {
@@ -56,10 +53,7 @@ const getSpeciesById = async (
       return next(new CustomError('Species not found', 404));
     }
 
-    res.json({
-      message: 'Species fetched successfully',
-      data: species,
-    });
+    res.json(species);
   } catch (error) {
     next(new CustomError((error as Error).message, 500));
   }

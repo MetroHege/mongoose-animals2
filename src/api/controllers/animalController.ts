@@ -29,16 +29,13 @@ const postAnimal = async (
 
 const getAnimals = async (
   req: Request,
-  res: Response<DBMessageResponse>,
+  res: Response<Animal[]>,
   next: NextFunction,
 ) => {
   try {
     const animals = await animalModel.find();
 
-    res.json({
-      message: 'Animals fetched successfully',
-      data: animals,
-    });
+    res.json(animals);
   } catch (error) {
     next(new CustomError((error as Error).message, 500));
   }
@@ -46,7 +43,7 @@ const getAnimals = async (
 
 const getAnimalById = async (
   req: Request<{id: string}>,
-  res: Response<DBMessageResponse>,
+  res: Response<Animal>,
   next: NextFunction,
 ) => {
   try {
@@ -56,10 +53,7 @@ const getAnimalById = async (
       return next(new CustomError('Animal not found', 404));
     }
 
-    res.json({
-      message: 'Animal fetched successfully',
-      data: animal,
-    });
+    res.json(animal);
   } catch (error) {
     next(new CustomError((error as Error).message, 500));
   }

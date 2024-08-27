@@ -23,4 +23,10 @@ const animalSchema = new mongoose.Schema<Animal>({
   },
 });
 
+animalSchema.statics.findBySpecies = function (
+  species: string,
+): Promise<Animal[]> {
+  return this.find({species}).exec();
+};
+
 export default mongoose.model<Animal>('Animal', animalSchema);
