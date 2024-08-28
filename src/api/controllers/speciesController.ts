@@ -18,7 +18,7 @@ const postSpecies = async (
     const newSpecies = new speciesModel(req.body);
     const savedSpecies = await newSpecies.save();
 
-    res.json({
+    res.status(201).json({
       message: 'Species saved successfully',
       data: savedSpecies,
     });
