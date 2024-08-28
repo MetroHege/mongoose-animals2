@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+import {model, Schema} from 'mongoose';
 import {Species} from '../../types/Species';
 
-const speciesSchema = new mongoose.Schema<Species>({
+const speciesSchema = new Schema<Species>({
   species_name: {
     type: String,
     required: true,
@@ -13,14 +13,21 @@ const speciesSchema = new mongoose.Schema<Species>({
     required: true,
   },
   category: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Category',
     required: true,
   },
   location: {
-    type: String,
-    required: true,
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
   },
 });
 
-export default mongoose.model<Species>('Species', speciesSchema);
+export default model<Species>('Species', speciesSchema);
