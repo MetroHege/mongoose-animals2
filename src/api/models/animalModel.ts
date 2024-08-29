@@ -35,12 +35,12 @@ animalSchema.statics.findBySpecies = function (
         from: 'species',
         localField: 'species',
         foreignField: '_id',
-        as: 'species_info',
+        as: 'species',
       },
     },
     {
       $match: {
-        'species_info.species_name': species_name,
+        'species.species_name': species_name,
       },
     },
   ]);
