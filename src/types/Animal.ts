@@ -1,5 +1,5 @@
 import {Point} from 'geojson';
-import mongoose from 'mongoose';
+import mongoose, {Model} from 'mongoose';
 import {Species} from './Species';
 
 type Animal = {
@@ -9,4 +9,8 @@ type Animal = {
   location: Point;
 };
 
-export {Animal};
+type AnimalModel = Model<Animal> & {
+  findBySpecies: (species_name: string) => Promise<Animal[]>;
+};
+
+export {Animal, AnimalModel};
