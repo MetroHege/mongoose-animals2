@@ -1,5 +1,6 @@
 # Rest API with typescript + mongo - starter files
 
-## Screenshot testeistä
+## Screenshotit testeistä
 
 ![Screenshot testeistä](./screenshot.png)
+![Screenshot testeistä](./screenshot2.png)
